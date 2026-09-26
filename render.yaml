@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: cybotics-tap-server
+    env: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cybotics-db
+          property: connectionString
+      - key: CLIENT_URL
+        value: "https://cybotics-tap.vercel.app" # Update this to your Vercel frontend URL
+      - key: PUBLIC_GAME_URL
+        value: "https://cybotics-tap.vercel.app" # Update this to your Vercel frontend URL
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_SECRET
+        generateValue: true
+      - key: DEFAULT_EVENT_NAME
+        value: "CYBOTICS FAIR 2026"
+
+databases:
+  - name: cybotics-db
+    databaseName: cybotics_tap
+    user: cybotics_user
+    plan: free
