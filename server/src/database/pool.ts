@@ -1,9 +1,16 @@
 import { Pool } from 'pg';
-import { newDb } from 'pg-mem';
+import { DataType, newDb } from 'pg-mem';
+import { randomUUID } from 'crypto';
 import { serverConfig } from '../config';
 
 const isProduction = serverConfig.NODE_ENV === 'production';
-const memoryPg = newDb({ autoCreateForeignKeyIndices: true }).adapters.createPg();
+const memoryDb = newDb({ autoCreateForeignKeyIndices: true });
+memoryDb.public.registerFunction({
+    name: 'gen_random_uuid',
+    returns: DataType.uuid,
+    implementation: () => randomUUID()
+});
+const memoryPg = memoryDb.adapters.createPg();
 
 const postgresPool = !serverConfig.USE_IN_MEMORY_DB && serverConfig.DATABASE_URL
     ? new Pool({
