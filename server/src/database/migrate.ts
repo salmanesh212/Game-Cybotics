@@ -79,7 +79,7 @@ export async function migrate() {
         `);
 
         const executedRes = await client.query('SELECT name FROM migrations');
-        const executed = new Set(executedRes.rows.map(r => r.name));
+        const executed = new Set(executedRes.rows.map((r: { name: string }) => r.name));
 
         for (const migration of migrations) {
             if (!executed.has(migration.name)) {

@@ -8,7 +8,8 @@ config();
 
 export const serverConfig = {
     PORT: parseInt(process.env.PORT || '3000', 10),
-    DATABASE_URL: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/cybotics_tap',
+    DATABASE_URL: process.env.DATABASE_URL || (process.env.NODE_ENV === 'production' ? '' : 'postgres://postgres:postgres@localhost:5432/cybotics_tap'),
+    USE_IN_MEMORY_DB: process.env.USE_IN_MEMORY_DB === 'true',
     CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
     PUBLIC_GAME_URL: process.env.PUBLIC_GAME_URL || 'http://localhost:5173',
     JWT_SECRET: process.env.JWT_SECRET || 'dev-secret-key-change-in-prod',
