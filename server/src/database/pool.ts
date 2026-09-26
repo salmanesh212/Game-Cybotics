@@ -8,6 +8,7 @@ const memoryDb = newDb({ autoCreateForeignKeyIndices: true });
 memoryDb.public.registerFunction({
     name: 'gen_random_uuid',
     returns: DataType.uuid,
+    impure: true,
     implementation: () => randomUUID()
 });
 const memoryPg = memoryDb.adapters.createPg();
