@@ -56,6 +56,14 @@ function generateRoundConfig(prng: () => number, roundNumber: number) {
     };
 }
 
+function readGrid(value: unknown): string[] {
+    const grid = typeof value === 'string' ? JSON.parse(value) : value;
+    if (!Array.isArray(grid) || !grid.every((item) => typeof item === 'string')) {
+        throw new Error('Invalid stored round grid');
+    }
+    return grid;
+}
+
 export class GameService {
     static async startGame(playerId: string, eventId: string) {
         const seed = crypto.randomBytes(4).readUInt32BE(0); // Using actual 32-bit integer for seed
@@ -114,7 +122,7 @@ export class GameService {
             roundNumber: roundNumber,
             targetType: row.target_type,
             targetValue: row.target_value,
-            grid: JSON.parse(row.grid_data)
+            grid: readGrid(row.grid_data)
         };
     }
     
@@ -151,7 +159,7 @@ export class GameService {
             const reactionTimeMs = timingRes.rows[0].elapsed_ms as number;
             if (reactionTimeMs < 75 || reactionTimeMs > 30000) throw new Error('Invalid response timing');
             
-            const grid = JSON.parse(roundRes.rows[0].grid_data);
+            const grid = readGrid(roundRes.rows[0].grid_data);
             if (selectedValue !== null && !grid.includes(selectedValue)) {
                 throw new Error('Selected value not in grid');
             }
