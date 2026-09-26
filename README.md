@@ -142,7 +142,7 @@ The PC is a display only. Closing it does not stop API or phone games.
 
 ## Load test
 
-The script simulates 10, 25, then 50 independent players. Each plays a complete 20-round game concurrently and checks that game IDs/results remain independent:
+The script simulates 10, 25, then 50 independent players. It checks completion and game ID uniqueness, verifies that spoofed scores and duplicate rounds are rejected, confirms repeated finish requests return the same score, and listens for live Socket.IO leaderboard updates:
 
 ```sh
 node scripts/load-test.mjs https://<test-api-host>
