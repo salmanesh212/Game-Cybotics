@@ -10,6 +10,7 @@ class ApiError extends Error {
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'bypass-tunnel-reminder': 'true',
     ...((options.headers as Record<string, string>) || {}),
   };
 

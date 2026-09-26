@@ -8,6 +8,7 @@ class SocketService {
   connect() {
     if (!this.socket) {
       this.socket = io(SOCKET_URL, {
+        query: { 'bypass-tunnel-reminder': 'true' },
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
